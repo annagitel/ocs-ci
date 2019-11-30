@@ -1502,3 +1502,31 @@ def create_dummy_osd(deployment):
             pass
 
     return dummy_deployment, dummy_pod
+
+def wait_for_ct_pod_recovery():
+    """
+    In case the of node failures scenarios, in which the selected node is
+    running the ceph tools pod, we'll want to wait for the pod recovery
+
+    Returns:
+        bool: True in case the ceph tools pod was recovered, False otherwise
+
+    """
+    try:
+        _ = get_admin_key()
+    except CommandFailed as ex:
+        logger.info(str(ex))
+        if "connection timed out" in str(ex):
+            logger.info(
+                "Ceph tools box was running on the node that had a failure. "
+                "Hence, waiting for a new Ceph tools box pod to spin up"
+            )
+            wait_for_resource_count_change(
+                func_to_use=pod.get_all_pods, previous_num=1,
+                namespace=config.ENV_DATA['cluster_namespace'], timeout=120,
+                selector=constants.TOOL_APP_LABEL
+            )
+            return True
+        else:
+            return False
+    return True
