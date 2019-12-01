@@ -2,7 +2,9 @@ import logging
 import pytest
 
 from ocs_ci.ocs import node, constants
-from ocs_ci.framework.testlib import tier4, ignore_leftovers, ManageTest
+from ocs_ci.framework.testlib import (
+    tier4, ignore_leftovers, ManageTest, aws_platform_required
+)
 from tests.sanity_helpers import Sanity
 from tests.helpers import wait_for_ct_pod_recovery
 

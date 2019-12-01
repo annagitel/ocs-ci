@@ -350,7 +350,6 @@ class VSPHERE(object):
                     logger.info("All VMs reached poweredOff off status")
                     break
 
-
     def start_vms(self, vms, wait=True):
         """
         Start VMs

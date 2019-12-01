@@ -190,7 +190,7 @@ class VMWareNodes(NodesBase):
         """
         vms = self.get_vms(self.cluster_nodes)
         assert vms, (
-            f"Failed to get VM objects for nodes {[n.name for n in ocp_nodes]}"
+            f"Failed to get VM objects for nodes {[n.name for n in self.cluster_nodes]}"
         )
         stopped_vms = [
             vm for vm in vms if self.vsphere.get_vm_power_status(vm) == constants.VM_POWERED_OFF
@@ -386,7 +386,7 @@ class AWSNodes(NodesBase):
         # Get the cluster nodes ec2 instances
         ec2_instances = self.get_ec2_instances(self.cluster_nodes)
         assert ec2_instances, (
-            f"Failed to get ec2 instances for nodes {[n.name for n in ocp_nodes]}"
+            f"Failed to get ec2 instances for nodes {[n.name for n in self.cluster_nodes]}"
         )
 
         logger.info(

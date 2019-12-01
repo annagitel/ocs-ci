@@ -1503,6 +1503,7 @@ def create_dummy_osd(deployment):
 
     return dummy_deployment, dummy_pod
 
+
 def wait_for_ct_pod_recovery():
     """
     In case the of node failures scenarios, in which the selected node is
