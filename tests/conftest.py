@@ -17,7 +17,6 @@ from ocs_ci.framework import config
 from ocs_ci.framework.pytest_customization.marks import (
     deployment, destroy, ignore_leftovers
 )
-from ocs_ci.ocs import constants, ocp, defaults
 from ocs_ci.ocs.version import get_ocs_version, report_ocs_version
 from ocs_ci.utility.environment_check import (
     get_status_before_execution, get_status_after_execution

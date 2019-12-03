@@ -139,8 +139,7 @@ def main():
     ap.add_argument(
         "--cluster-path",
         required=True,
-        help="Path to cluster directory"
-        )
+        help="Path to cluster directory")
     ap.add_argument(
         "-l",
         "--loglevel",
