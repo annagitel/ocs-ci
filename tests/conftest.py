@@ -1,7 +1,6 @@
 import logging
 import os
 import tempfile
-import time
 
 import pytest
 import threading
