@@ -1,6 +1,7 @@
 import tempfile
 import argparse
 import logging
+import threading
 import os
 
 from ocs_ci.framework import config
@@ -8,6 +9,7 @@ from ocs_ci.ocs.parallel import parallel
 from ocs_ci.ocs.constants import CLEANUP_YAML, TEMPLATE_CLEANUP_DIR
 from ocs_ci.utility.utils import run_cmd
 from ocs_ci.utility import templating
+
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +31,6 @@ def cleanup(cluster_name, cluster_id):
     oc_bin = os.path.join(bin_dir, "openshift-install")
     logger.info(f"cleaning up {cluster_id}")
     run_cmd(f"{oc_bin} destroy cluster --dir {cleanup_path} --log-level=debug")
-    
 
 def main():
     parser = argparse.ArgumentParser(description='Cleanup AWS Resource')
@@ -42,8 +43,12 @@ def main():
     )
     logging.basicConfig(level=logging.DEBUG)
     args = parser.parse_args()
-    with parallel() as p:
-        for id in args.cluster:
-            cluster_name = id[0].rsplit('-',1)[0]
-            logger.info(f"cleaning up {id[0]}")
-            p.spawn(cleanup, cluster_name, id[0])
+    procs = []
+    for id in args.cluster:
+        cluster_name = id[0].rsplit('-',1)[0]
+        logger.info(f"cleaning up {id[0]}")
+        proc = threading.Thread(target=cleanup, args=(cluster_name, id[0]))
+        proc.start()
+        procs.append(proc)
+    for p in procs:
+        p.join()
