@@ -36,7 +36,7 @@ def main():
     parser = argparse.ArgumentParser(description='Cleanup AWS Resource')
     parser.add_argument(
         '--cluster', 
-        nargs='+',
+        nargs=1,
         action='append',
         required=True,
         help="Cluster name tag"
